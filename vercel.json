@@ -1,0 +1,7 @@
+{
+    "functions": {
+        "api/indexv2.py": {
+            "maxDuration": 10
+        }
+    }
+}

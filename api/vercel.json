@@ -1,13 +1,14 @@
 {
-  "functions": {
-    "api/indexv2.py": {
-      "runtime": "python3.9"
+  "builds": [
+    {
+      "src": "api/roblox.py",
+      "use": "@vercel/python"
     }
-  },
+  ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/api/indexv2.py"
+      "dest": "api/roblox.py"
     }
   ]
 }

